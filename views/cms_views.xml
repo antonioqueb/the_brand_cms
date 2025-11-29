@@ -42,38 +42,63 @@
                                     <field name="sequence" widget="handle"/>
                                     <field name="year"/>
                                     <field name="title"/>
-                                    <field name="subtitle"/>
-                                    <!-- Campos invisibles para lógica de UI -->
-                                    <field name="media_type" column_invisible="True"/>
+                                    <field name="media_type"/>
                                     
-                                    <!-- Subida de Imagen Directa -->
-                                    <field name="image" 
-                                           widget="image" 
-                                           options="{'size': [50, 50]}" 
-                                           invisible="media_type != 'image'"/>
+                                    <!-- Campos invisibles para nombres de archivo -->
                                     <field name="image_filename" column_invisible="True"/>
-                                    
-                                    <!-- URL Video -->
-                                    <field name="video_url" 
-                                           placeholder="https://..." 
+                                    <field name="video_filename" column_invisible="True"/>
+
+                                    <!-- IMAGEN (Visible si media_type == image) -->
+                                    <field name="image" 
+                                           widget="binary" 
+                                           filename="image_filename"
+                                           options="{'accepted_file_extensions': '.png,.jpg,.jpeg,.webp'}"
+                                           invisible="media_type != 'image'"/>
+                                           
+                                    <!-- VIDEO (Visible si media_type == video) -->
+                                    <field name="video_file" 
+                                           widget="binary" 
+                                           filename="video_filename"
+                                           options="{'accepted_file_extensions': '.mp4,.webm,.mov'}"
+                                           string="Subir Video"
                                            invisible="media_type != 'video'"/>
-                                    
+
                                     <field name="description"/>
                                 </list>
+                                
+                                <!-- FORMULARIO EMERGENTE (Si abren el registro) -->
                                 <form>
                                     <group>
-                                        <group>
+                                        <group string="Información">
                                             <field name="year"/>
                                             <field name="title"/>
                                             <field name="subtitle"/>
+                                            <field name="sequence"/>
+                                        </group>
+                                        <group string="Contenido Multimedia">
+                                            <field name="media_type" widget="radio"/>
+                                            
+                                            <!-- Configuración Imagen -->
+                                            <field name="image" 
+                                                   widget="image" 
+                                                   invisible="media_type != 'image'"/>
+                                            <field name="image_src_manual" 
+                                                   invisible="media_type != 'image'" 
+                                                   placeholder="https://... (Opcional)"/>
+                                            
+                                            <!-- Configuración Video -->
+                                            <field name="video_filename" invisible="1"/>
+                                            <field name="video_file" 
+                                                   widget="binary" 
+                                                   filename="video_filename"
+                                                   invisible="media_type != 'video'"/>
+                                            <field name="video_url_manual" 
+                                                   invisible="media_type != 'video'" 
+                                                   placeholder="https://youtube.com/... (Opcional si no subes archivo)"/>
                                         </group>
                                         <group>
-                                            <field name="media_type"/>
-                                            <field name="image" widget="image" invisible="media_type != 'image'"/>
-                                            <field name="image_src_manual" invisible="media_type != 'image'"/>
-                                            <field name="video_url" invisible="media_type != 'video'"/>
+                                            <field name="description"/>
                                         </group>
-                                        <field name="description"/>
                                     </group>
                                 </form>
                             </field>
@@ -84,18 +109,16 @@
         </field>
     </record>
 
-    <!-- ACTION (ID CAMBIADO PARA EVITAR ERROR DE CONFLICTO) -->
+    <!-- ACTION -->
     <record id="action_brand_page_config" model="ir.actions.act_window">
         <field name="name">Brand Configuration</field>
         <field name="res_model">the.brand.page</field>
         <field name="view_mode">form</field>
-        <!-- Referencia al ID creado en cms_data.xml -->
         <field name="res_id" ref="the_brand_cms.main_brand_page"/> 
     </record>
 
     <!-- MENU -->
     <menuitem id="menu_the_brand_root" name="THE BRAND" sequence="55"/>
-    <!-- Apuntamos a la nueva acción -->
     <menuitem id="menu_the_brand_cms" name="Configuration" parent="menu_the_brand_root" action="action_brand_page_config" sequence="1"/>
 
 </odoo>

@@ -21,7 +21,6 @@ class TheBrandPage(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
-        """Prevenir crear más de una configuración de Brand"""
         if self.search_count([]) >= 1:
             raise UserError('Ya existe una configuración para The Brand Page. Por favor edita la existente.')
         return super().create(vals_list)
@@ -39,8 +38,9 @@ class TheBrandPage(models.Model):
                 'subtitle': ch.subtitle or '',
                 'description': ch.description or '',
                 'media_type': ch.media_type,
-                'image_url': ch.get_image_url(),
-                'video_url': ch.video_url or '',
+                # Resolvemos URLs dinámicamente
+                'image_url': ch.get_image_src(),
+                'video_url': ch.get_video_src(),
             })
 
         return {
@@ -70,27 +70,38 @@ class TheBrandChapter(models.Model):
     subtitle = fields.Char(string="Subtítulo")
     description = fields.Text(string="Descripción")
     
-    # Configuración de Medios
+    # Selector de Tipo de Medio
     media_type = fields.Selection([
         ('image', 'Imagen'),
-        ('video', 'Video URL')
+        ('video', 'Video')
     ], string="Tipo de Medio", default='image', required=True)
 
-    image = fields.Binary(string="Imagen de Fondo", attachment=True)
+    # --- CAMPOS DE IMAGEN ---
+    image = fields.Binary(string="Archivo de Imagen", attachment=True)
     image_filename = fields.Char("Nombre archivo imagen")
-    
-    # Campo para URL manual si prefieren hostear la imagen fuera, similar al modulo HOME
-    image_src_manual = fields.Char(string="URL Manual Imagen", help="Si se llena, tiene prioridad sobre la imagen subida")
-    
-    video_url = fields.Char(string="URL del Video", help="URL externa o embed")
+    image_src_manual = fields.Char(string="URL Externa (Imagen)", help="Opcional: URL externa si no subes archivo")
 
-    def get_image_url(self):
-        """Retorna la URL relativa, el controlador la convertirá en absoluta"""
+    # --- CAMPOS DE VIDEO ---
+    video_file = fields.Binary(string="Archivo de Video", attachment=True)
+    video_filename = fields.Char("Nombre archivo video")
+    video_url_manual = fields.Char(string="URL Externa (Video)", help="Opcional: Youtube/Vimeo o link directo")
+
+    def get_image_src(self):
+        """Prioridad: 1. Manual URL, 2. Archivo subido"""
         self.ensure_one()
         if self.image_src_manual:
             return self.image_src_manual
-        
         if self.image:
-            # Retornamos la ruta relativa estándar de Odoo
             return f"/web/image?model={self._name}&id={self.id}&field=image"
         return ""
+
+    def get_video_src(self):
+        """Prioridad: 1. Archivo subido, 2. Manual URL"""
+        self.ensure_one()
+        # Si hay archivo subido, generamos la URL de descarga/streaming
+        if self.video_file:
+            # Usamos /web/content para videos para asegurar el MIME type correcto
+            return f"/web/content?model={self._name}&id={self.id}&field=video_file"
+        
+        # Si no, devolvemos la URL manual
+        return self.video_url_manual or ""
