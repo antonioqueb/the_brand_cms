@@ -44,7 +44,7 @@
                                     <field name="title"/>
                                     <field name="subtitle"/>
                                     <!-- Campos invisibles para lógica de UI -->
-                                    <field name="media_type"/>
+                                    <field name="media_type" column_invisible="True"/>
                                     
                                     <!-- Subida de Imagen Directa -->
                                     <field name="image" 
@@ -84,17 +84,18 @@
         </field>
     </record>
 
-    <!-- ACTION -->
-    <record id="action_open_brand_cms" model="ir.actions.act_window">
+    <!-- ACTION (ID CAMBIADO PARA EVITAR ERROR DE CONFLICTO) -->
+    <record id="action_brand_page_config" model="ir.actions.act_window">
         <field name="name">Brand Configuration</field>
         <field name="res_model">the.brand.page</field>
         <field name="view_mode">form</field>
-        <!-- Forzamos abrir el primer registro o crear uno si no existe (via Python seria mejor, pero esto sirve) -->
+        <!-- Referencia al ID creado en cms_data.xml -->
         <field name="res_id" ref="the_brand_cms.main_brand_page"/> 
     </record>
 
     <!-- MENU -->
-    <menuitem id="menu_the_brand_root" name="The Brand" sequence="55"/>
-    <menuitem id="menu_the_brand_cms" name="Configuration" parent="menu_the_brand_root" action="action_open_brand_cms" sequence="1"/>
+    <menuitem id="menu_the_brand_root" name="THE BRAND" sequence="55"/>
+    <!-- Apuntamos a la nueva acción -->
+    <menuitem id="menu_the_brand_cms" name="Configuration" parent="menu_the_brand_root" action="action_brand_page_config" sequence="1"/>
 
 </odoo>
