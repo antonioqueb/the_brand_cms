@@ -96,12 +96,13 @@ class TheBrandChapter(models.Model):
         return ""
 
     def get_video_src(self):
-        """Prioridad: 1. Archivo subido, 2. Manual URL"""
+        """Prioridad: 1. Archivo subido (Ruta con nombre de archivo), 2. Manual URL"""
         self.ensure_one()
-        # Si hay archivo subido, generamos la URL de descarga/streaming
-        if self.video_file:
-            # Usamos /web/content para videos para asegurar el MIME type correcto
-            return f"/web/content?model={self._name}&id={self.id}&field=video_file"
         
-        # Si no, devolvemos la URL manual
+        if self.video_file:
+            # TRUCO: Agregamos el nombre del archivo a la URL
+            # Limpiamos el nombre de espacios para evitar errores de URL
+            safe_filename = (self.video_filename or 'video.mp4').replace(' ', '_')
+            return f"/api/the-brand/video/{self.id}/{safe_filename}"
+        
         return self.video_url_manual or ""
