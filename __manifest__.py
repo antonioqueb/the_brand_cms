@@ -10,7 +10,8 @@
         - Soporte para Imágenes y Videos
         - Interfaz unificada sin redirecciones complejas
     """,
-    'author': 'Tu Empresa',
+    'author': 'Alphaque Consulting',
+    'website': 'https://alphaque.com',
     'depends': ['base', 'web'],
     'data': [
         'security/ir.model.access.csv',
