@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- FORM VIEW: Diseñado para ser limpio y ordenado -->
+    <record id="view_the_brand_page_form" model="ir.ui.view">
+        <field name="name">the.brand.page.form</field>
+        <field name="model">the.brand.page</field>
+        <field name="arch" type="xml">
+            <form string="The Brand CMS">
+                <sheet>
+                    <div class="oe_title">
+                        <h1>Gestor de Contenido: The Brand</h1>
+                    </div>
+                    
+                    <group string="1. Hero Section">
+                        <group>
+                            <field name="hero_number"/>
+                            <field name="hero_label"/>
+                        </group>
+                        <group>
+                            <field name="hero_title" placeholder="Ej: Curating the &lt;br&gt; Earth's Soul."/>
+                            <field name="hero_subtitle" placeholder="Ej: Earth's Soul."/>
+                        </group>
+                    </group>
+
+                    <group string="2. The Manifesto">
+                        <field name="manifesto_title"/>
+                        <field name="manifesto_text"/>
+                    </group>
+
+                    <separator string="3. History &amp; Legacy Timeline" />
+                    <p class="text-muted">
+                        Agrega aquí los capítulos. Arrastra el icono de la izquierda (cruz) para reordenar la secuencia.
+                    </p>
+                    
+                    <field name="chapter_ids">
+                        <tree editable="bottom">
+                            <field name="sequence" widget="handle"/>
+                            <field name="year"/>
+                            <field name="title"/>
+                            <field name="subtitle"/>
+                            <field name="description"/>
+                            <field name="media_type"/>
+                            <field name="image" widget="binary" filename="image_filename" options="{'size': [90, 90]}" attrs="{'invisible': [('media_type', '!=', 'image')]}"/>
+                            <field name="image_filename" invisible="1"/>
+                            <field name="video_url" placeholder="https://vimeo.com/..." attrs="{'invisible': [('media_type', '!=', 'video')]}"/>
+                        </tree>
+                    </field>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- ACTION: Server Action para abrir siempre el registro ID 1 -->
+    <!-- Esto evita que el usuario tenga que ver una lista y seleccionar un registro -->
+    <record id="action_open_brand_cms" model="ir.actions.server">
+        <field name="name">Gestor de Contenido</field>
+        <field name="model_id" ref="model_the_brand_page"/>
+        <field name="state">code</field>
+        <field name="code">
+            action = {
+                'type': 'ir.actions.act_window',
+                'view_mode': 'form',
+                'res_model': 'the.brand.page',
+                'res_id': env.ref('the_brand_cms.main_brand_page').id,
+                'target': 'current',
+            }
+        </field>
+    </record>
+
+    <!-- MENU -->
+    <menuitem id="menu_the_brand_root" name="The Brand" web_icon="the_brand_cms,static/description/icon.png" sequence="10"/>
+    <menuitem id="menu_the_brand_cms" name="Gestor CMS" parent="menu_the_brand_root" action="action_open_brand_cms" sequence="1"/>
+
+</odoo>

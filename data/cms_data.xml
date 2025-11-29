@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        
+        <!-- REGISTRO PRINCIPAL -->
+        <record id="main_brand_page" model="the.brand.page">
+            <field name="hero_number">01</field>
+            <field name="hero_label">Philosophy</field>
+            <field name="hero_title"><![CDATA[Curating the <br /> Earth's Soul.]]></field>
+            <field name="hero_subtitle">Earth's Soul.</field>
+            <field name="manifesto_title">"We act as custodians of ancient energies."</field>
+            <field name="manifesto_text">At One of a Kind, we operate at the intersection of geology and fine living. We believe that true luxury is not manufactured; it is excavated.</field>
+        </record>
+
+        <!-- CAPÍTULOS DEMO (Basados en tu React) -->
+        <record id="chapter_1" model="the.brand.chapter">
+            <field name="page_id" ref="main_brand_page"/>
+            <field name="sequence">1</field>
+            <field name="year">2023</field>
+            <field name="title">The Genesis</field>
+            <field name="subtitle">Mexico City</field>
+            <field name="description">It began not in a boardroom, but in the silence of the earth. We realized that true luxury cannot be manufactured; it must be excavated.</field>
+            <field name="media_type">video</field>
+            <field name="video_url">https://tu-video-url.com/brand-story.mp4</field>
+        </record>
+
+        <record id="chapter_2" model="the.brand.chapter">
+            <field name="page_id" ref="main_brand_page"/>
+            <field name="sequence">2</field>
+            <field name="year">The Quest</field>
+            <field name="title">Global Sourcing</field>
+            <field name="subtitle">Remote Quarries</field>
+            <field name="description">Our curators traveled to the most remote corners of the globe. From the skeletal coasts of Namibia to the deep mines of Brazil.</field>
+            <field name="media_type">image</field>
+            <!-- Nota: En XML plano no podemos meter binarios pesados fácilmente sin base64, 
+                 el usuario deberá subir la imagen real en el backend. -->
+        </record>
+
+        <record id="chapter_3" model="the.brand.chapter">
+            <field name="page_id" ref="main_brand_page"/>
+            <field name="sequence">3</field>
+            <field name="year">Present</field>
+            <field name="title">The Curation</field>
+            <field name="subtitle">Private Collections</field>
+            <field name="description">Today, we operate as custodians of ancient energy. We do not design nature; we simply frame it.</field>
+            <field name="media_type">image</field>
+        </record>
+
+    </data>
+</odoo>

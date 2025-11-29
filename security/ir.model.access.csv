@@ -1,0 +1,5 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_the_brand_page_user,the.brand.page.user,model_the_brand_page,base.group_user,1,1,1,1
+access_the_brand_chapter_user,the.brand.chapter.user,model_the_brand_chapter,base.group_user,1,1,1,1
+access_the_brand_page_public,the.brand.page.public,model_the_brand_page,base.group_public,1,0,0,0
+access_the_brand_chapter_public,the.brand.chapter.public,model_the_brand_chapter,base.group_public,1,0,0,0
