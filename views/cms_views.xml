@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- TREE VIEW PARA CHAPTERS (explícita) -->
-    <record id="view_the_brand_chapter_tree" model="ir.ui.view">
-        <field name="name">the.brand.chapter.tree</field>
+    <!-- LIST VIEW PARA CHAPTERS -->
+    <record id="view_the_brand_chapter_list" model="ir.ui.view">
+        <field name="name">the.brand.chapter.list</field>
         <field name="model">the.brand.chapter</field>
         <field name="arch" type="xml">
-            <tree editable="bottom">
+            <list editable="bottom">
                 <field name="sequence" widget="handle"/>
                 <field name="year"/>
                 <field name="title"/>
@@ -17,13 +17,13 @@
                        widget="binary" 
                        filename="image_filename" 
                        options="{'size': [90, 90]}" 
-                       column_invisible="parent.media_type != 'image'"
+                       column_invisible="True"
                        invisible="media_type != 'image'"/>
                 <field name="image_filename" column_invisible="True"/>
                 <field name="video_url" 
                        placeholder="https://vimeo.com/..." 
                        invisible="media_type != 'video'"/>
-            </tree>
+            </list>
         </field>
     </record>
 
